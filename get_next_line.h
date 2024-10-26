@@ -17,4 +17,8 @@
 
 char	*get_next_line(int fd);
 
+void	*ft_realloc(const void *ptr, size_t old_size, size_t new_size);
+
+void	ft_memcpy(void *dest, const void *src, size_t n);
+
 #endif
