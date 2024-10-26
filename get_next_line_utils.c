@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-void	*ft_realloc(const void *ptr, size_t old_size, size_t new_size)
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
 	void	*p;
 	size_t	i;
@@ -30,6 +30,7 @@ void	*ft_realloc(const void *ptr, size_t old_size, size_t new_size)
 		ft_memcpy(p, ptr, old_size);
 	else
 		ft_memcpy(p, ptr, new_size);
+	free(ptr);
 	return (p);
 }
 
