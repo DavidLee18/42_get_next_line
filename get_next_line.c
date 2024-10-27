@@ -10,9 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 8
-#endif
 #include "get_next_line.h"
 
 char	*get_next_line(int fd)
@@ -21,19 +18,22 @@ char	*get_next_line(int fd)
 	ssize_t	i;
 	size_t	l;
 
-	i = 0;
+	i = malloc_read(&str, fd);
 	l = 0;
-	str = (char *)malloc(BUFFER_SIZE * sizeof(char));
-	if (!str)
-		return (NULL);
-	while (1)
+	if (i <= 0)
+		return (free_(str));
+	else if (i < BUFFER_SIZE)
+		return (str);
+	str = (char *)ft_realloc(str, l, l + BUFFER_SIZE);
+	while (str)
 	{
+		l += BUFFER_SIZE;
 		i = read(fd, str + l, BUFFER_SIZE);
 		if (i < 0)
-			return (NULL);
+			return (free_(str));
 		else if (i < BUFFER_SIZE)
 			return (str);
-		str = ft_realloc(str, l, l + BUFFER_SIZE);
-		l += BUFFER_SIZE;
+		str = (char *)ft_realloc(str, l, l + BUFFER_SIZE);
 	}
+	return (NULL);
 }

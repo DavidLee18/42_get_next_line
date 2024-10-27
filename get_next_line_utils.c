@@ -45,3 +45,21 @@ void	ft_memcpy(void *dest, const void *src, size_t n)
 		i++;
 	}
 }
+
+ssize_t	malloc_read(char **strp, int fd)
+{
+	*strp = (char *)malloc(BUFFER_SIZE);
+	if (!*strp)
+	{
+		*strp = NULL;
+		return (-1);
+	}
+	return (read(fd, *strp, BUFFER_SIZE));
+}
+
+char	*free_(char *p)
+{
+	if (p)
+		free(p);
+	return (NULL);
+}
