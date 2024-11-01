@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/25 22:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/10/25 22:49:45 by jaehylee         ###   ########.fr       */
+/*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
+/*   Updated: 2024/11/01 16:09:37 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_next_line(int fd)
 	size_t	l;
 
 	i = malloc_read(&str, fd);
-	l = 0;
+	l = BUFFER_SIZE;
 	if (i <= 0)
 		return (free_(str));
 	else if (i < BUFFER_SIZE)

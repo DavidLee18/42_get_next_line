@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:57:55 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/10/25 23:00:08 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/01 00:57:51 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,33 @@
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
 	void	*p;
-	size_t	i;
 
-	i = 0;
 	p = malloc(new_size);
 	if (!p)
-		return (NULL);
-	while (i < new_size)
-	{
-		((char *)p)[i] = 0;
-		i++;
-	}
+		return (free_(ptr));
 	if (old_size < new_size)
-		ft_memcpy(p, ptr, old_size);
+		ft_memmove(p, ptr, old_size);
 	else
-		ft_memcpy(p, ptr, new_size);
+		ft_memmove(p, ptr, new_size);
 	free(ptr);
+	ptr = NULL;
 	return (p);
 }
 
-void	ft_memcpy(void *dest, const void *src, size_t n)
+void	ft_memmove(void *dest, const void *src, size_t n)
 {
 	size_t	i;
 
+	if (dest < src)
+	{
+		i = n;
+		while (i > 0)
+		{
+			((char *) dest)[i] = ((char *)src)[i];
+			i--;
+		}
+		return ;
+	}
 	i = 0;
 	while (i < n)
 	{
@@ -60,6 +64,9 @@ ssize_t	malloc_read(char **strp, int fd)
 char	*free_(char *p)
 {
 	if (p)
+	{
 		free(p);
+		p = NULL;
+	}
 	return (NULL);
 }
