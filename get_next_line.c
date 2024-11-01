@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/01 19:57:15 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/02 04:43:31 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 char	*get_next_line(int fd)
 {
 	char	*str;
-	char	*new_str;
 	ssize_t	i;
 	size_t	l;
 
+	str = NULL;
 	i = malloc_read(&str, fd);
 	l = BUFFER_SIZE;
-	if (i <= 0)
+	if (i < 0 || (i == 0 && !str))
 		return (free_(str));
 	else if (i < BUFFER_SIZE)
 		return (str);
