@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:57:55 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/02 03:55:18 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/05 03:34:46 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ ssize_t	malloc_read(char **strp, int fd)
 {
 	*strp = (char *)malloc(BUFFER_SIZE);
 	if (!*strp)
-	{
-		*strp = NULL;
 		return (-1);
-	}
 	return (read(fd, *strp, BUFFER_SIZE));
 }
 
@@ -69,4 +66,26 @@ char	*free_(char *p)
 		p = NULL;
 	}
 	return (NULL);
+}
+
+void	read_loop(int fd, char **strp, size_t offset, char **buf)
+{
+	ssize_t	i;
+	size_t	end;
+
+	i = 0;
+	if (!*strp)
+		i = malloc_read(strp, fd);
+	else
+		i = read(fd, *strp + offset, BUFFER_SIZE);
+	if (i < 0 || (i == 0 && !*strp))
+	{
+		free_(*strp);
+		return ;
+	}
+	else if (i == 0)
+		return ;
+	end = take_line(strp, offset, buf, i);
+	if (end == BUFFER_SIZE)
+		read_loop(fd, strp, offset, buf);
 }
