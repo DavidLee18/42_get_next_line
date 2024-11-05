@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/05 20:29:54 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/05 23:54:47 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_next_line(int fd)
 	return (str);
 }
 
-ssize_t	take_line(char **strp, char **buf, ssize_t len)
+ssize_t	take_line(char **strp, char **buf)
 {
 	ssize_t	k;
 	ssize_t	res;
@@ -30,42 +30,33 @@ ssize_t	take_line(char **strp, char **buf, ssize_t len)
 	k = 0;
 	while (*(*strp + k) && *(*strp + k) != '\n')
 		k++;
-	if (k == len)
-		k = -1;
-	res = add_substr(strp, k + 1, buf, len);
+	res = add_substr(strp, k, buf);
 	if (res < BUFFER_SIZE)
 		return (res);
-	*strp = (char *)ft_realloc(*strp, len, len + BUFFER_SIZE);
+	*strp = (char *)ft_realloc(*strp, res, res + BUFFER_SIZE);
 	if (!*strp)
 		return (0);
 	return (BUFFER_SIZE);
 }
 
-ssize_t	add_substr(char **srcp, size_t from, char **destp, size_t len)
+ssize_t	add_substr(char **srcp, size_t from, char **destp)
 {
 	size_t	dest_len;
+	size_t	src_len;
 
-	if (from == 0)
-	{
-		*srcp = (char *)malloc(1);
-		if (*srcp)
-			**srcp = '\0';
-		return (-1);
-	}
-	if (from == len)
-		return (len);
-	dest_len = 0;
-	while (*(*destp + dest_len))
-		dest_len++;
+	src_len = ft_strlen(*srcp);
+	if (from != 0 && from >= src_len)
+		return (from);
+	dest_len = ft_strlen(*destp);
 	*destp = (char *)ft_realloc(*destp, dest_len + 1,
-			1 + len - from);
+			dest_len + 2 + src_len - from);
 	if (!*destp)
 		return (-1);
-	ft_memmove(*destp, *srcp + from, len - from);
-	*(*destp + len - from + 1) = '\0';
-	*srcp = ft_realloc(*srcp, len + 1, from + 1);
+	ft_memmove(*destp + dest_len, *srcp + from + 1, src_len - from + 1);
+	*(*destp + dest_len + src_len - from + 1) = '\0';
+	*srcp = ft_realloc(*srcp, src_len + 1, from + 1);
 	*(*srcp + from) = '\0';
-	return (from);
+	return ((ssize_t)from - (ssize_t)src_len);
 }
 
 ssize_t	take_buf(char **strp, char **buf)

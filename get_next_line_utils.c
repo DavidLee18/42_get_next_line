@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:57:55 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/05 20:36:23 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/05 23:26:46 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ char	*free_(char *p)
 void	read_loop(int fd, char **strp, size_t offset, char **buf)
 {
 	ssize_t	i;
-	size_t	end;
+	ssize_t	end;
 	ssize_t	idx;
 
 	if (!*strp)
 	{
 		idx = take_buf(strp, buf);
-		if (idx < 0 || **buf || !*strp || *(*strp + idx) == '\n')
+		if (idx < 0 || **buf || *(*strp + idx) == '\n')
 			return ;
 		offset = idx;
 	}
@@ -81,7 +81,17 @@ void	read_loop(int fd, char **strp, size_t offset, char **buf)
 	}
 	else if (i == 0)
 		return ;
-	end = take_line(strp, buf, i);
+	end = take_line(strp, buf);
 	if (end == BUFFER_SIZE)
 		read_loop(fd, strp, offset + BUFFER_SIZE, buf);
+}
+
+size_t	ft_strlen(char *str)
+{
+	size_t	l;
+
+	l = 0;
+	while (str[l])
+		l++;
+	return (l);
 }

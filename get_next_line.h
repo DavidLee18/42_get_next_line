@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 02:50:16 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/05 19:22:04 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/05 23:26:38 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,14 @@ char	*free_(char *p);
 
 void	read_loop(int fd, char **strp, size_t offset, char **buf);
 
-ssize_t	take_line(char **strp, char **buf, ssize_t len);
+ssize_t	take_line(char **strp, char **buf);
 
-ssize_t	add_substr(char **srcp, size_t from, char **destp, size_t len);
+ssize_t	add_substr(char **srcp, size_t from, char **destp);
 
 ssize_t	take_buf(char **strp, char **buf);
 
 ssize_t	load_substr(char **strp, char **buf, size_t nl);
+
+size_t	ft_strlen(char *str);
 
 #endif
