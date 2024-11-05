@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:57:55 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/05 03:34:46 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/05 10:11:08 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,6 @@ void	ft_memmove(void *dest, const void *src, size_t n)
 	}
 }
 
-ssize_t	malloc_read(char **strp, int fd)
-{
-	*strp = (char *)malloc(BUFFER_SIZE);
-	if (!*strp)
-		return (-1);
-	return (read(fd, *strp, BUFFER_SIZE));
-}
-
 char	*free_(char *p)
 {
 	if (p)
@@ -72,12 +64,16 @@ void	read_loop(int fd, char **strp, size_t offset, char **buf)
 {
 	ssize_t	i;
 	size_t	end;
+	size_t	idx;
 
-	i = 0;
 	if (!*strp)
-		i = malloc_read(strp, fd);
-	else
-		i = read(fd, *strp + offset, BUFFER_SIZE);
+	{
+		idx = take_buf(strp, buf);
+		if (**buf || *strp[idx] == '\n')
+			return ;
+		offset = idx;
+	}
+	i = read(fd, *strp + offset, BUFFER_SIZE);
 	if (i < 0 || (i == 0 && !*strp))
 	{
 		free_(*strp);
@@ -87,5 +83,5 @@ void	read_loop(int fd, char **strp, size_t offset, char **buf)
 		return ;
 	end = take_line(strp, offset, buf, i);
 	if (end == BUFFER_SIZE)
-		read_loop(fd, strp, offset, buf);
+		read_loop(fd, strp, offset + BUFFER_SIZE, buf);
 }
