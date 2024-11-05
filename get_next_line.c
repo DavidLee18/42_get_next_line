@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/05 23:54:47 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/06 02:11:07 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ ssize_t	add_substr(char **srcp, size_t from, char **destp)
 	ft_memmove(*destp + dest_len, *srcp + from + 1, src_len - from + 1);
 	*(*destp + dest_len + src_len - from + 1) = '\0';
 	*srcp = ft_realloc(*srcp, src_len + 1, from + 1);
-	*(*srcp + from) = '\0';
+	*(*srcp + from + 1) = '\0';
 	return ((ssize_t)from - (ssize_t)src_len);
 }
 
@@ -72,7 +72,7 @@ ssize_t	take_buf(char **strp, char **buf)
 		**buf = '\0';
 	}
 	else if (!**buf)
-		return (0);
+		return (-1);
 	i = 0;
 	while (*(*buf + i) && *(*buf + i) != '\n')
 		i++;
@@ -85,9 +85,7 @@ ssize_t	load_substr(char **strp, char **buf, size_t nl)
 	size_t	buf_len;
 	size_t	diff;
 
-	buf_len = 0;
-	while (*(*buf + buf_len))
-		buf_len++;
+	buf_len = ft_strlen(*buf);
 	*strp = (char *)malloc(nl + 2);
 	if (!*strp)
 		return (-1);
@@ -96,7 +94,7 @@ ssize_t	load_substr(char **strp, char **buf, size_t nl)
 		return (0);
 	*(*strp + nl + 1) = '\0';
 	diff = buf_len - nl;
-	ft_memmove(*buf, *buf + nl, diff + 1);
+	ft_memmove(*buf, *buf + nl + 1, diff);
 	*buf = (char *)ft_realloc(*buf, buf_len + 1, diff + 1);
-	return (nl + 1);
+	return (nl);
 }
