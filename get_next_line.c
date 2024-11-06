@@ -28,6 +28,13 @@ ssize_t	take_line(char **strp, char **buf)
 	ssize_t	k;
 	ssize_t	res;
 
+	if (!*buf)
+	{
+		*buf = (char *)malloc(1);
+		if (!*buf)
+			return (-1);
+		**buf = '\0';
+	}
 	k = 0;
 	while (*(*strp + k) && *(*strp + k) != '\n')
 		k++;
@@ -50,12 +57,12 @@ ssize_t	add_substr(char **srcp, size_t from, char **destp)
 		return (from);
 	dest_len = ft_strlen(*destp);
 	*destp = (char *)ft_realloc(*destp, dest_len + 1,
-			dest_len + 2 + src_len - from);
+			dest_len + 1 + src_len - from);
 	if (!*destp)
 		return (-1);
-	ft_memmove(*destp + dest_len, *srcp + from + 1, src_len - from + 1);
-	*(*destp + dest_len + src_len - from + 1) = '\0';
-	*srcp = ft_realloc(*srcp, src_len + 1, from + 1);
+	ft_memmove(*destp + dest_len, *srcp + from + 1, src_len - from);
+	*(*destp + dest_len + src_len - from - 1) = '\0';
+	*srcp = ft_realloc(*srcp, src_len + 1, from + 2);
 	*(*srcp + from + 1) = '\0';
 	return ((ssize_t)from - (ssize_t)src_len);
 }
@@ -63,7 +70,7 @@ ssize_t	add_substr(char **srcp, size_t from, char **destp)
 ssize_t	take_buf(char **strp, char **buf)
 {
 	size_t	i;
-	size_t	actual;
+	ssize_t	actual;
 
 	*strp = (char *)malloc(1);
 	if (!*strp)
@@ -100,6 +107,12 @@ ssize_t	load_substr(char **strp, char **buf, size_t nl)
 	*(*strp + nl + 1) = '\0';
 	diff = buf_len - nl;
 	ft_memmove(*buf, *buf + nl + 1, diff);
-	*buf = (char *)ft_realloc(*buf, buf_len + 1, diff + 1);
-	return (nl);
+	if (diff == 0)
+		free_(buf);
+	else
+		*buf = (char *)ft_realloc(*buf, buf_len + 1, diff + 1);
+	if (!*buf)
+		return (-1);
+	*(*buf + diff) = '\0';
+	return ((ssize_t)nl + 1);
 }

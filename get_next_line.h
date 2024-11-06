@@ -26,7 +26,7 @@ void	ft_memmove(void *dest, const void *src, size_t n);
 
 ssize_t	malloc_read(char **strp, int fd);
 
-char	*free_(char *p);
+char	*free_(char **p);
 
 void	read_loop(int fd, char **strp, size_t offset, char **buf);
 

@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:57:55 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/06 02:56:43 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/07 00:28:54 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,32 +30,26 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 
 void	ft_memmove(void *dest, const void *src, size_t n)
 {
-	size_t	i;
+	ssize_t	i;
 
-	if (dest < src)
+	if (dest > src)
 	{
-		i = n;
-		while (i > 0)
-		{
-			((char *) dest)[i - 1] = ((char *)src)[i - 1];
-			i--;
-		}
+		i = (ssize_t)n;
+		while (--i >= 0)
+			((char *) dest)[i] = ((char *)src)[i];
 		return ;
 	}
-	i = 0;
-	while (i < n)
-	{
+	i = -1;
+	while (++i < (ssize_t)n)
 		((char *) dest)[i] = ((char *)src)[i];
-		i++;
-	}
 }
 
-char	*free_(char *p)
+char	*free_(char **p)
 {
-	if (p)
+	if (*p)
 	{
-		free(p);
-		p = NULL;
+		free(*p);
+		*p = NULL;
 	}
 	return (NULL);
 }
@@ -63,26 +57,26 @@ char	*free_(char *p)
 void	read_loop(int fd, char **strp, size_t offset, char **buf)
 {
 	ssize_t	i;
-	ssize_t	end;
 	ssize_t	idx;
 
-	if (!*strp && offset == 0)
+	if (!*strp)
 	{
 		idx = take_buf(strp, buf);
-		if (idx < 0 || **buf || (*strp && *(*strp + idx) == '\n'))
+		if (idx < 0 && ((*buf && **buf && *(*strp + idx) == '\n') || *buf))
 			return ;
-		offset = idx;
+		if (idx < 0 && !*buf)
+			offset = ft_strlen(*strp);
+		else
+			offset = idx;
 	}
 	i = read(fd, *strp + offset, BUFFER_SIZE);
-	if (i < 0 || (i == 0 && !*strp))
-	{
-		free_(*strp);
+	if (i < 0 || (i == 0 && (!*strp || !**strp)))
+		free_(strp);
+	if (i == 0 && (!*strp || !*(*strp + offset)) && !**buf)
+		free_(buf);
+	if (i == 0)
 		return ;
-	}
-	else if (i == 0)
-		return ;
-	end = take_line(strp, buf);
-	if (end == BUFFER_SIZE)
+	if (take_line(strp, buf) == BUFFER_SIZE)
 		read_loop(fd, strp, offset + BUFFER_SIZE, buf);
 }
 
