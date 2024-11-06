@@ -18,7 +18,8 @@ char	*get_next_line(int fd)
 	static char		*buf;
 
 	str = NULL;
-	read_loop(fd, &str, 0, &buf);
+	if (fd >= 0)
+		read_loop(fd, &str, 0, &buf);
 	return (str);
 }
 
