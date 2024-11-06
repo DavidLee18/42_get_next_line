@@ -84,7 +84,7 @@ ssize_t	take_buf(char **strp, char **buf)
 		**buf = '\0';
 	}
 	else if (!**buf)
-		return (-1);
+		return (free_(buf), -1);
 	i = 0;
 	while (*(*buf + i) && *(*buf + i) != '\n')
 		i++;
