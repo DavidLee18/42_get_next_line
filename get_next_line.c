@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/06 02:11:07 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/06 02:50:44 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,10 @@ ssize_t	take_buf(char **strp, char **buf)
 	size_t	i;
 	size_t	actual;
 
+	*strp = (char *)malloc(1);
+	if (!*strp)
+		return (-1);
+	**strp = '\0';
 	if (!*buf)
 	{
 		*buf = (char *)malloc(1);
@@ -86,7 +90,7 @@ ssize_t	load_substr(char **strp, char **buf, size_t nl)
 	size_t	diff;
 
 	buf_len = ft_strlen(*buf);
-	*strp = (char *)malloc(nl + 2);
+	*strp = (char *)ft_realloc(*strp, 1, nl + 2);
 	if (!*strp)
 		return (-1);
 	ft_memmove(*strp, *buf, nl + 1);
