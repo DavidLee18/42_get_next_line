@@ -54,13 +54,13 @@ ssize_t	add_substr(char **srcp, size_t from, char **destp)
 
 	src_len = ft_strlen(*srcp);
 	if (from != 0 && from >= src_len)
-		return (from);
+		return ((ssize_t)from);
 	dest_len = ft_strlen(*destp);
 	*destp = (char *)ft_realloc(*destp, dest_len + 1,
-			dest_len + 1 + src_len - from);
+			dest_len + src_len - from);
 	if (!*destp)
 		return (-1);
-	ft_memmove(*destp + dest_len, *srcp + from + 1, src_len - from);
+	ft_memmove(*destp + dest_len, *srcp + from + 1, src_len - from - 1);
 	*(*destp + dest_len + src_len - from - 1) = '\0';
 	*srcp = ft_realloc(*srcp, src_len + 1, from + 2);
 	*(*srcp + from + 1) = '\0';
@@ -98,13 +98,12 @@ ssize_t	load_substr(char **strp, char **buf, size_t nl)
 	size_t	diff;
 
 	buf_len = ft_strlen(*buf);
-	*strp = (char *)ft_realloc(*strp, 1, nl + 2);
+	*strp = (char *)ft_realloc(*strp, 1, nl * (nl != 0 || buf_len != 0) + 1);
 	if (!*strp)
 		return (-1);
 	ft_memmove(*strp, *buf, nl + 1);
 	if (!**strp && !**buf)
 		return (0);
-	*(*strp + nl + 1) = '\0';
 	diff = buf_len - nl;
 	ft_memmove(*buf, *buf + nl + 1, diff);
 	if (diff == 0)

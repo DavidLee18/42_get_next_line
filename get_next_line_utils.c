@@ -62,7 +62,8 @@ void	read_loop(int fd, char **strp, size_t offset, char **buf)
 	if (!*strp)
 	{
 		idx = take_buf(strp, buf);
-		if (idx < 0 && ((*buf && **buf && *(*strp + idx) == '\n') || *buf))
+		if ((*buf && **buf && *(*strp + ft_strlen(*strp) - 1) == '\n')
+			|| (idx < 0 && *buf))
 			return ;
 		if (idx < 0 && !*buf)
 			offset = ft_strlen(*strp);
