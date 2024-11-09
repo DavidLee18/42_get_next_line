@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/06 02:50:44 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/10 03:38:05 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ ssize_t	take_line(char **strp, char **buf)
 {
 	ssize_t	k;
 	ssize_t	res;
+	size_t	alloc;
 
 	if (!*buf)
 	{
@@ -41,8 +42,8 @@ ssize_t	take_line(char **strp, char **buf)
 	res = add_substr(strp, k, buf);
 	if (res < BUFFER_SIZE)
 		return (res);
-	*strp = (char *)ft_realloc(*strp, res, res + BUFFER_SIZE);
-	if (!*strp)
+	alloc = ft_realloc((void **)strp, res, res + BUFFER_SIZE);
+	if (!alloc)
 		return (0);
 	return (BUFFER_SIZE);
 }
@@ -51,18 +52,21 @@ ssize_t	add_substr(char **srcp, size_t from, char **destp)
 {
 	size_t	dest_len;
 	size_t	src_len;
+	size_t	alloc;
 
 	src_len = ft_strlen(*srcp);
 	if (from != 0 && from >= src_len)
 		return ((ssize_t)from);
 	dest_len = ft_strlen(*destp);
-	*destp = (char *)ft_realloc(*destp, dest_len + 1,
+	alloc = ft_realloc((void **)destp, dest_len + 1,
 			dest_len + src_len - from);
-	if (!*destp)
+	if (!alloc)
 		return (-1);
 	ft_memmove(*destp + dest_len, *srcp + from + 1, src_len - from - 1);
 	*(*destp + dest_len + src_len - from - 1) = '\0';
-	*srcp = ft_realloc(*srcp, src_len + 1, from + 2);
+	alloc = ft_realloc((void **)srcp, src_len + 1, from + 2);
+	if (!alloc)
+		return (-1);
 	*(*srcp + from + 1) = '\0';
 	return ((ssize_t)from - (ssize_t)src_len);
 }
@@ -96,10 +100,11 @@ ssize_t	load_substr(char **strp, char **buf, size_t nl)
 {
 	size_t	buf_len;
 	size_t	diff;
+	size_t	alloc;
 
 	buf_len = ft_strlen(*buf);
-	*strp = (char *)ft_realloc(*strp, 1, nl * (nl != 0 || buf_len != 0) + 1);
-	if (!*strp)
+	alloc = ft_realloc((void **)strp, 1, nl * (nl != 0 || buf_len != 0) + 1);
+	if (!alloc)
 		return (-1);
 	ft_memmove(*strp, *buf, nl + 1);
 	if (!**strp && !**buf)
@@ -109,8 +114,8 @@ ssize_t	load_substr(char **strp, char **buf, size_t nl)
 	if (diff == 0)
 		free_(buf);
 	else
-		*buf = (char *)ft_realloc(*buf, buf_len + 1, diff + 1);
-	if (!*buf)
+		alloc = ft_realloc((void **)buf, buf_len + 1, diff + 1);
+	if (!alloc)
 		return (-1);
 	*(*buf + diff) = '\0';
 	return ((ssize_t)nl + 1);

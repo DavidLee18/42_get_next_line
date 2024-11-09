@@ -6,26 +6,30 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:57:55 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/07 00:28:54 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/10 03:37:39 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
+size_t	ft_realloc(void **ptrp, size_t old_size, size_t new_size)
 {
 	void	*p;
 
 	p = malloc(new_size);
 	if (!p)
-		return (free_(ptr));
+	{
+		free_((char **)ptrp);
+		return (0);
+	}
 	if (old_size < new_size)
-		ft_memmove(p, ptr, old_size);
+		ft_memmove(p, *ptrp, old_size);
 	else
-		ft_memmove(p, ptr, new_size);
-	free(ptr);
-	ptr = NULL;
-	return (p);
+		ft_memmove(p, *ptrp, new_size);
+	free(*ptrp);
+	*ptrp = NULL;
+	*ptrp = p;
+	return (1);
 }
 
 void	ft_memmove(void *dest, const void *src, size_t n)
