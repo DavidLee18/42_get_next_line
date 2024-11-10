@@ -103,19 +103,18 @@ ssize_t	load_substr(char **strp, char **buf, size_t nl)
 	size_t	alloc;
 
 	buf_len = ft_strlen(*buf);
-	alloc = ft_realloc((void **)strp, 1, nl + (nl != 0 || buf_len != 0) + 1);
+	alloc = ft_realloc((void **)strp, 1, nl + (nl != buf_len) + 1);
 	if (!alloc)
 		return (-1);
-	ft_memmove(*strp, *buf, nl + (nl != 0 || buf_len != 0) + 1);
-	*(*strp + nl + (nl != 0 || buf_len != 0)) = '\0';
+	ft_memmove(*strp, *buf, nl + (nl != buf_len));
+	*(*strp + nl + (nl != buf_len)) = '\0';
 	if (!**strp && !**buf)
 		return (0);
 	diff = buf_len - nl;
 	ft_memmove(*buf, *buf + nl + 1, diff - 1);
 	if (diff == 0)
-		free_(buf);
-	else
-		alloc = ft_realloc((void **)buf, buf_len + 1, diff);
+		return (free_(buf), (ssize_t)nl);
+	alloc = ft_realloc((void **)buf, buf_len + 1, diff);
 	if (!alloc)
 		return (-1);
 	*(*buf + diff - 1) = '\0';

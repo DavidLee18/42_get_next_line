@@ -79,7 +79,7 @@ void	read_loop(int fd, char **strp, size_t offset, char **buf)
 		free_(strp);
 	if (i == 0 && (!*strp || !*(*strp + offset)) && (*buf && !**buf))
 		free_(buf);
-	if (i == 0)
+	if (i <= 0)
 		return ;
 	if (take_line(strp, buf) == BUFFER_SIZE)
 		read_loop(fd, strp, offset + BUFFER_SIZE, buf);
