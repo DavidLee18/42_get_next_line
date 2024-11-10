@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/10 03:38:05 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/11 01:52:20 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,14 @@ ssize_t	take_line(char **strp, char **buf)
 		**buf = '\0';
 	}
 	k = 0;
+	if (!*strp)
+		return (-1);
 	while (*(*strp + k) && *(*strp + k) != '\n')
 		k++;
 	res = add_substr(strp, k, buf);
 	if (res < BUFFER_SIZE)
 		return (res);
-	alloc = ft_realloc((void **)strp, res, res + BUFFER_SIZE);
+	alloc = ft_realloc((void **)strp, res + 1, res + 1 + BUFFER_SIZE);
 	if (!alloc)
 		return (0);
 	return (BUFFER_SIZE);
@@ -54,6 +56,8 @@ ssize_t	add_substr(char **srcp, size_t from, char **destp)
 	size_t	src_len;
 	size_t	alloc;
 
+	if (!*srcp)
+		return (-1);
 	src_len = ft_strlen(*srcp);
 	if (from != 0 && from >= src_len)
 		return ((ssize_t)from);
