@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/11 01:52:20 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/12 01:19:46 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*get_next_line(int fd)
 
 ssize_t	take_line(char **strp, char **buf)
 {
-	ssize_t	k;
+	size_t	k;
 	ssize_t	res;
 	size_t	alloc;
 
@@ -78,7 +78,6 @@ ssize_t	add_substr(char **srcp, size_t from, char **destp)
 ssize_t	take_buf(char **strp, char **buf)
 {
 	size_t	i;
-	ssize_t	actual;
 
 	*strp = (char *)malloc(1);
 	if (!*strp)
@@ -96,8 +95,7 @@ ssize_t	take_buf(char **strp, char **buf)
 	i = 0;
 	while (*(*buf + i) && *(*buf + i) != '\n')
 		i++;
-	actual = load_substr(strp, buf, i);
-	return (actual);
+	return (load_substr(strp, buf, i));
 }
 
 ssize_t	load_substr(char **strp, char **buf, size_t nl)
@@ -107,7 +105,8 @@ ssize_t	load_substr(char **strp, char **buf, size_t nl)
 	size_t	alloc;
 
 	buf_len = ft_strlen(*buf);
-	alloc = ft_realloc((void **)strp, 1, nl + (nl != buf_len) + 1);
+	alloc = ft_realloc((void **)strp, 1,
+			nl + (nl != buf_len) + BUFFER_SIZE + 1);
 	if (!alloc)
 		return (-1);
 	ft_memmove(*strp, *buf, nl + (nl != buf_len));
@@ -122,5 +121,5 @@ ssize_t	load_substr(char **strp, char **buf, size_t nl)
 	if (!alloc)
 		return (-1);
 	*(*buf + diff - 1) = '\0';
-	return ((ssize_t)nl + 1);
+	return ((ssize_t)nl + (nl != buf_len));
 }
