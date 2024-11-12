@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:57:55 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/12 01:18:51 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/12 19:35:53 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 size_t	ft_realloc(void **ptrp, size_t old_size, size_t new_size)
 {
 	void	*p;
+	ssize_t	i;
 
 	p = malloc(new_size);
 	if (!p)
@@ -22,6 +23,9 @@ size_t	ft_realloc(void **ptrp, size_t old_size, size_t new_size)
 		free_((char **)ptrp);
 		return (0);
 	}
+	i = -1;
+	while ((size_t)++i < new_size)
+		*((char *)p + i) = '\0';
 	if (old_size < new_size)
 		ft_memmove(p, *ptrp, old_size);
 	else
