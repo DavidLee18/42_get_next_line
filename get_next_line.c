@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/12 01:19:46 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/13 02:30:12 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ ssize_t	add_substr(char **srcp, size_t from, char **destp)
 	if (!alloc)
 		return (-1);
 	ft_memmove(*destp + dest_len, *srcp + from + 1, src_len - from - 1);
-	*(*destp + dest_len + src_len - from - 1) = '\0';
 	alloc = ft_realloc((void **)srcp, src_len + 1, from + 2);
 	if (!alloc)
 		return (-1);
@@ -110,7 +109,6 @@ ssize_t	load_substr(char **strp, char **buf, size_t nl)
 	if (!alloc)
 		return (-1);
 	ft_memmove(*strp, *buf, nl + (nl != buf_len));
-	*(*strp + nl + (nl != buf_len)) = '\0';
 	if (!**strp && !**buf)
 		return (0);
 	diff = buf_len - nl;
@@ -120,6 +118,5 @@ ssize_t	load_substr(char **strp, char **buf, size_t nl)
 	alloc = ft_realloc((void **)buf, buf_len + 1, diff);
 	if (!alloc)
 		return (-1);
-	*(*buf + diff - 1) = '\0';
 	return ((ssize_t)nl + (nl != buf_len));
 }
