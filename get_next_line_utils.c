@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:57:55 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/16 17:12:47 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/16 22:14:54 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,23 @@ void	read_loop(int fd, char **strp, size_t offset, char **buf)
 	if (!*strp)
 	{
 		idx = take_buf(strp, buf);
-		if ((*buf && **buf && *(*strp + idx) == '\n')
-			|| idx < 0)
+		if ((*buf && **buf && *(*strp + idx) == '\n') || idx < 0)
 			return ;
 		else
 			offset = idx;
 	}
+	else if (offset != 0 && *(*strp + offset - 1) == '\n')
+		return ;
 	i = read(fd, *strp + offset, BUFFER_SIZE);
-	if (i <= 0 && *strp && !**strp)
+	if (i < 0 || (i == 0 && *strp && !**strp))
 		free_(strp);
 	if (i == 0 && (!*strp || !*(*strp + offset)) && (*buf && !**buf))
 		free_(buf);
 	if (i <= 0)
 		return ;
-	if (take_line(strp, offset + i, buf) >= BUFFER_SIZE)
-		read_loop(fd, strp, offset + BUFFER_SIZE, buf);
+	idx = take_line(strp, offset + i, buf);
+	if (idx >= 0)
+		read_loop(fd, strp, idx, buf);
 }
 
 size_t	ft_strlen(char *str)

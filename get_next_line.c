@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/16 16:10:15 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/16 21:14:33 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ ssize_t	take_line(char **strp, size_t until, char **buf)
 	while (k < until && *(*strp + k) && *(*strp + k) != '\n')
 		k++;
 	res = add_substr(strp, until, k, buf);
-	if (res < BUFFER_SIZE)
+	if (res < 0)
 		return (res);
 	alloc = ft_realloc((void **)strp, res + 1, res + 1 + BUFFER_SIZE);
 	if (!alloc)
-		return (0);
-	return (BUFFER_SIZE);
+		return (-1);
+	return (res);
 }
 
 ssize_t	add_substr(char **srcp, size_t src_len, size_t from, char **destp)
@@ -57,7 +57,7 @@ ssize_t	add_substr(char **srcp, size_t src_len, size_t from, char **destp)
 	if (!*srcp)
 		return (-1);
 	if (from != 0 && from == src_len)
-		return (0);
+		return ((ssize_t)src_len);
 	dest_len = ft_strlen(*destp);
 	alloc = ft_realloc((void **)destp, dest_len + 1,
 			dest_len + src_len - from);
@@ -69,7 +69,7 @@ ssize_t	add_substr(char **srcp, size_t src_len, size_t from, char **destp)
 	if (!alloc)
 		return (-1);
 	*(*srcp + from + 1) = '\0';
-	return ((ssize_t)from - (ssize_t)src_len);
+	return ((ssize_t)from + 1);
 }
 
 ssize_t	take_buf(char **strp, char **buf)
