@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 02:50:16 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/13 20:50:03 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/16 08:31:36 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,13 @@ size_t	ft_realloc(void **ptrp, size_t old_size, size_t new_size);
 
 void	ft_memmove(void *dest, const void *src, size_t n);
 
-ssize_t	malloc_read(char **strp, int fd);
-
 char	*free_(char **p);
 
 void	read_loop(int fd, char **strp, size_t offset, char **buf);
 
-ssize_t	take_line(char **strp, char **buf);
+ssize_t	take_line(char **strp, size_t until, char **buf);
 
-ssize_t	add_substr(char **srcp, size_t from, char **destp);
+ssize_t	add_substr(char **srcp, size_t src_len, size_t from, char **destp);
 
 ssize_t	take_buf(char **strp, char **buf);
 
