@@ -6,11 +6,17 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/17 14:42:11 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/17 14:59:00 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*get_next_line(int fd);
+void	read_loop(const int fd, char **strp, size_t offset, char **temp);
+ssize_t	take_temp(char **strp, char **temp);
+ssize_t	load_substr(char **strp, char **temp, const size_t nl);
+char	*free_(char **p);
 
 char	*get_next_line(int fd)
 {
@@ -27,53 +33,30 @@ char	*get_next_line(int fd)
 	return (str);
 }
 
-ssize_t	take_line(char **strp, const size_t until, char **temp)
+void	read_loop(const int fd, char **strp, size_t offset, char **temp)
 {
-	size_t	k;
-	ssize_t	res;
-	size_t	alloc;
+	ssize_t	i;
+	ssize_t	idx;
 
-	if (!*temp)
-	{
-		alloc = ft_realloc((void **)temp, 0, 1);
-		if (!alloc)
-			return (-1);
-	}
-	k = 0;
 	if (!*strp)
-		return (-1);
-	while (k < until && *(*strp + k) && *(*strp + k) != '\n')
-		k++;
-	res = add_substr(strp, until, k, temp);
-	if (res < 0)
-		return (res);
-	alloc = ft_realloc((void **)strp, res + 1, res + 1 + BUFFER_SIZE);
-	if (!alloc)
-		return (-1);
-	return (res);
-}
-
-ssize_t	add_substr(char **srcp, const size_t src_len, const size_t from, char **destp)
-{
-	size_t	dest_len;
-	size_t	alloc;
-
-	if (!*srcp)
-		return (-1);
-	if (from != 0 && from == src_len)
-		return ((ssize_t)src_len);
-	dest_len = ft_strlen(*destp);
-	alloc = ft_realloc((void **)destp, dest_len + 1,
-			dest_len + src_len - from);
-	if (!alloc)
-		return (-1);
-	ft_memmove(*destp + dest_len, *srcp + from + 1, src_len - from - 1);
-	*(*destp + dest_len + src_len - from - 1) = '\0';
-	alloc = ft_realloc((void **)srcp, src_len, from + 2);
-	if (!alloc)
-		return (-1);
-	*(*srcp + from + 1) = '\0';
-	return ((ssize_t)from + 1);
+	{
+		idx = take_temp(strp, temp);
+		if ((*temp && **temp && *(*strp + idx) == '\n') || idx < 0)
+			return ;
+		offset = idx;
+	}
+	else if (offset != 0 && *(*strp + offset - 1) == '\n')
+		return ;
+	i = read(fd, *strp + offset, BUFFER_SIZE);
+	if (i < 0 || (i == 0 && *strp && !**strp))
+		free_(strp);
+	if (i == 0 && (!*strp || !*(*strp + offset)) && (*temp && !**temp))
+		free_(temp);
+	if (i <= 0)
+		return ;
+	idx = take_line(strp, offset + i, temp);
+	if (idx >= 0)
+		read_loop(fd, strp, idx, temp);
 }
 
 ssize_t	take_temp(char **strp, char **temp)
@@ -118,4 +101,14 @@ ssize_t	load_substr(char **strp, char **temp, const size_t nl)
 		return (-1);
 	*(*temp + temp_len - nl - 1) = '\0';
 	return ((ssize_t)nl + (nl != temp_len));
+}
+
+char	*free_(char **p)
+{
+	if (*p)
+	{
+		free(*p);
+		*p = NULL;
+	}
+	return (NULL);
 }

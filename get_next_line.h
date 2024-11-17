@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 02:50:16 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/16 21:51:44 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:01:55 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	read_loop(const int fd, char **strp, size_t offset, char **temp);
 
 ssize_t	take_line(char **strp, const size_t until, char **temp);
 
-ssize_t	add_substr(char **srcp, const size_t src_len, const size_t from, char **destp);
+ssize_t	add_substr(char **srcp, const size_t src_len, const size_t from,
+			char **destp);
 
 ssize_t	take_temp(char **strp, char **temp);
 
