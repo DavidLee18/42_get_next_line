@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-size_t	ft_realloc(void **ptrp, size_t old_size, size_t new_size)
+size_t	ft_realloc(void **ptrp, const size_t old_size, const size_t new_size)
 {
 	void	*p;
 	ssize_t	i;
@@ -37,7 +37,7 @@ size_t	ft_realloc(void **ptrp, size_t old_size, size_t new_size)
 	return (1);
 }
 
-void	ft_memmove(void *dest, const void *src, size_t n)
+void	ft_memmove(void *dest, const void *src, const size_t n)
 {
 	ssize_t	i;
 
@@ -63,7 +63,7 @@ char	*free_(char **p)
 	return (NULL);
 }
 
-void	read_loop(int fd, char **strp, size_t offset, char **temp)
+void	read_loop(const int fd, char **strp, size_t offset, char **temp)
 {
 	ssize_t	i;
 	ssize_t	idx;
@@ -90,7 +90,7 @@ void	read_loop(int fd, char **strp, size_t offset, char **temp)
 		read_loop(fd, strp, idx, temp);
 }
 
-size_t	ft_strlen(char *str)
+size_t	ft_strlen(const char *str)
 {
 	size_t	l;
 

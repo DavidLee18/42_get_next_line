@@ -23,7 +23,7 @@ char	*get_next_line(int fd)
 	return (str);
 }
 
-ssize_t	take_line(char **strp, size_t until, char **temp)
+ssize_t	take_line(char **strp, const size_t until, char **temp)
 {
 	size_t	k;
 	ssize_t	res;
@@ -49,7 +49,7 @@ ssize_t	take_line(char **strp, size_t until, char **temp)
 	return (res);
 }
 
-ssize_t	add_substr(char **srcp, size_t src_len, size_t from, char **destp)
+ssize_t	add_substr(char **srcp, const size_t src_len, const size_t from, char **destp)
 {
 	size_t	dest_len;
 	size_t	alloc;
@@ -95,7 +95,7 @@ ssize_t	take_temp(char **strp, char **temp)
 	return (load_substr(strp, temp, i));
 }
 
-ssize_t	load_substr(char **strp, char **temp, size_t nl)
+ssize_t	load_substr(char **strp, char **temp, const size_t nl)
 {
 	size_t	temp_len;
 	size_t	alloc;
