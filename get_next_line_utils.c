@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:57:55 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/16 22:14:54 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/17 13:56:05 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,7 @@ void	read_loop(const int fd, char **strp, size_t offset, char **temp)
 		idx = take_temp(strp, temp);
 		if ((*temp && **temp && *(*strp + idx) == '\n') || idx < 0)
 			return ;
-		else
-			offset = idx;
+		offset = idx;
 	}
 	else if (offset != 0 && *(*strp + offset - 1) == '\n')
 		return ;

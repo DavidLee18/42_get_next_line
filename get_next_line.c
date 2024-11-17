@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/16 21:14:33 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/17 14:42:11 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,16 @@
 
 char	*get_next_line(int fd)
 {
-	char			*str;
-	static char		*temp;
+	char		*str;
+	static char	*temp;
+	long long	buf_size;
 
 	str = NULL;
-	if (fd >= 0)
-		read_loop(fd, &str, 0, &temp);
+	buf_size = BUFFER_SIZE;
+	if (fd < 0 || buf_size <= 0 || buf_size > 9223372036854775807
+		|| fd > 1048576)
+		return (NULL);
+	read_loop(fd, &str, 0, &temp);
 	return (str);
 }
 
