@@ -26,15 +26,15 @@ void	ft_memmove(void *dest, const void *src, size_t n);
 
 char	*free_(char **p);
 
-void	read_loop(int fd, char **strp, size_t offset, char **buf);
+void	read_loop(int fd, char **strp, size_t offset, char **temp);
 
-ssize_t	take_line(char **strp, size_t until, char **buf);
+ssize_t	take_line(char **strp, size_t until, char **temp);
 
 ssize_t	add_substr(char **srcp, size_t src_len, size_t from, char **destp);
 
-ssize_t	take_buf(char **strp, char **buf);
+ssize_t	take_temp(char **strp, char **temp);
 
-ssize_t	load_substr(char **strp, char **buf, size_t nl);
+ssize_t	load_substr(char **strp, char **temp, size_t nl);
 
 size_t	ft_strlen(char *str);
 

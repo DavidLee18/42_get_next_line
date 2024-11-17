@@ -15,23 +15,23 @@
 char	*get_next_line(int fd)
 {
 	char			*str;
-	static char		*buf;
+	static char		*temp;
 
 	str = NULL;
 	if (fd >= 0)
-		read_loop(fd, &str, 0, &buf);
+		read_loop(fd, &str, 0, &temp);
 	return (str);
 }
 
-ssize_t	take_line(char **strp, size_t until, char **buf)
+ssize_t	take_line(char **strp, size_t until, char **temp)
 {
 	size_t	k;
 	ssize_t	res;
 	size_t	alloc;
 
-	if (!*buf)
+	if (!*temp)
 	{
-		alloc = ft_realloc((void **)buf, 0, 1);
+		alloc = ft_realloc((void **)temp, 0, 1);
 		if (!alloc)
 			return (-1);
 	}
@@ -40,7 +40,7 @@ ssize_t	take_line(char **strp, size_t until, char **buf)
 		return (-1);
 	while (k < until && *(*strp + k) && *(*strp + k) != '\n')
 		k++;
-	res = add_substr(strp, until, k, buf);
+	res = add_substr(strp, until, k, temp);
 	if (res < 0)
 		return (res);
 	alloc = ft_realloc((void **)strp, res + 1, res + 1 + BUFFER_SIZE);
@@ -72,7 +72,7 @@ ssize_t	add_substr(char **srcp, size_t src_len, size_t from, char **destp)
 	return ((ssize_t)from + 1);
 }
 
-ssize_t	take_buf(char **strp, char **buf)
+ssize_t	take_temp(char **strp, char **temp)
 {
 	size_t	i;
 	size_t	alloc;
@@ -80,38 +80,38 @@ ssize_t	take_buf(char **strp, char **buf)
 	alloc = ft_realloc((void **)strp, 0, 1);
 	if (!alloc)
 		return (-1);
-	if (!*buf)
+	if (!*temp)
 	{
-		alloc = ft_realloc((void **)buf, 0, 1);
+		alloc = ft_realloc((void **)temp, 0, 1);
 		if (!alloc)
 			return (-1);
 	}
-	else if (!**buf)
-		return (free_(buf), (ssize_t)ft_realloc((void **)strp, 1,
+	else if (!**temp)
+		return (free_(temp), (ssize_t)ft_realloc((void **)strp, 1,
 				BUFFER_SIZE + 1) - 1);
 	i = 0;
-	while (*(*buf + i) && *(*buf + i) != '\n')
+	while (*(*temp + i) && *(*temp + i) != '\n')
 		i++;
-	return (load_substr(strp, buf, i));
+	return (load_substr(strp, temp, i));
 }
 
-ssize_t	load_substr(char **strp, char **buf, size_t nl)
+ssize_t	load_substr(char **strp, char **temp, size_t nl)
 {
-	size_t	buf_len;
+	size_t	temp_len;
 	size_t	alloc;
 
-	buf_len = ft_strlen(*buf);
+	temp_len = ft_strlen(*temp);
 	alloc = ft_realloc((void **)strp, 1,
-			nl + (nl != buf_len) + BUFFER_SIZE + 1);
+			nl + (nl != temp_len) + BUFFER_SIZE + 1);
 	if (!alloc)
 		return (-1);
-	ft_memmove(*strp, *buf, nl + (nl != buf_len));
-	if (buf_len == nl)
-		return (free_(buf), (ssize_t)nl);
-	ft_memmove(*buf, *buf + nl + 1, buf_len - nl - 1);
-	alloc = ft_realloc((void **)buf, buf_len + 1, buf_len - nl);
+	ft_memmove(*strp, *temp, nl + (nl != temp_len));
+	if (temp_len == nl)
+		return (free_(temp), (ssize_t)nl);
+	ft_memmove(*temp, *temp + nl + 1, temp_len - nl - 1);
+	alloc = ft_realloc((void **)temp, temp_len + 1, temp_len - nl);
 	if (!alloc)
 		return (-1);
-	*(*buf + buf_len - nl - 1) = '\0';
-	return ((ssize_t)nl + (nl != buf_len));
+	*(*temp + temp_len - nl - 1) = '\0';
+	return ((ssize_t)nl + (nl != temp_len));
 }

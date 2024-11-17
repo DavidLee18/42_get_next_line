@@ -63,15 +63,15 @@ char	*free_(char **p)
 	return (NULL);
 }
 
-void	read_loop(int fd, char **strp, size_t offset, char **buf)
+void	read_loop(int fd, char **strp, size_t offset, char **temp)
 {
 	ssize_t	i;
 	ssize_t	idx;
 
 	if (!*strp)
 	{
-		idx = take_buf(strp, buf);
-		if ((*buf && **buf && *(*strp + idx) == '\n') || idx < 0)
+		idx = take_temp(strp, temp);
+		if ((*temp && **temp && *(*strp + idx) == '\n') || idx < 0)
 			return ;
 		else
 			offset = idx;
@@ -81,13 +81,13 @@ void	read_loop(int fd, char **strp, size_t offset, char **buf)
 	i = read(fd, *strp + offset, BUFFER_SIZE);
 	if (i < 0 || (i == 0 && *strp && !**strp))
 		free_(strp);
-	if (i == 0 && (!*strp || !*(*strp + offset)) && (*buf && !**buf))
-		free_(buf);
+	if (i == 0 && (!*strp || !*(*strp + offset)) && (*temp && !**temp))
+		free_(temp);
 	if (i <= 0)
 		return ;
-	idx = take_line(strp, offset + i, buf);
+	idx = take_line(strp, offset + i, temp);
 	if (idx >= 0)
-		read_loop(fd, strp, idx, buf);
+		read_loop(fd, strp, idx, temp);
 }
 
 size_t	ft_strlen(char *str)
