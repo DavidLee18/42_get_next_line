@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:57:55 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/17 15:01:17 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/25 07:38:52 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ ssize_t	take_line(char **strp, const size_t until, char **temp);
 ssize_t	add_substr(char **srcp, const size_t src_len, const size_t from,
 			char **destp);
 size_t	ft_realloc(void **ptrp, const size_t old_size, const size_t new_size);
-void	ft_memmove(void *dest, const void *src, const size_t n);
+void	ft_memmove_(void *dest, const void *src, const size_t n);
 size_t	ft_strlen(const char *str);
 
 ssize_t	take_line(char **strp, const size_t until, char **temp)
@@ -94,7 +94,7 @@ size_t	ft_realloc(void **ptrp, const size_t old_size, const size_t new_size)
 	return (1);
 }
 
-void	ft_memmove(void *dest, const void *src, const size_t n)
+void	ft_memmove_(void *dest, const void *src, const size_t n)
 {
 	ssize_t	i;
 

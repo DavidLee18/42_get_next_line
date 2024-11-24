@@ -22,7 +22,7 @@ char	*get_next_line(int fd);
 
 size_t	ft_realloc(void **ptrp, const size_t old_size, const size_t new_size);
 
-void	ft_memmove(void *dest, const void *src, const size_t n);
+void	ft_memmove_(void *dest, const void *src, const size_t n);
 
 char	*free_(char **p);
 
