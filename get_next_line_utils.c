@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:57:55 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/25 07:38:52 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/25 07:44:28 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ ssize_t	add_substr(char **srcp, const size_t src_len, const size_t from,
 			dest_len + src_len - from);
 	if (!alloc)
 		return (-1);
-	ft_memmove(*destp + dest_len, *srcp + from + 1, src_len - from - 1);
+	ft_memmove_(*destp + dest_len, *srcp + from + 1, src_len - from - 1);
 	*(*destp + dest_len + src_len - from - 1) = '\0';
 	alloc = ft_realloc((void **)srcp, src_len, from + 2);
 	if (!alloc)
@@ -85,9 +85,9 @@ size_t	ft_realloc(void **ptrp, const size_t old_size, const size_t new_size)
 	while ((size_t)++i < new_size)
 		*((char *)p + i) = '\0';
 	if (old_size < new_size)
-		ft_memmove(p, *ptrp, old_size);
+		ft_memmove_(p, *ptrp, old_size);
 	else
-		ft_memmove(p, *ptrp, new_size);
+		ft_memmove_(p, *ptrp, new_size);
 	if (old_size != 0)
 		free_((char **)ptrp);
 	*ptrp = p;

@@ -6,7 +6,7 @@
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 01:46:12 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/11/17 14:59:00 by jaehylee         ###   ########.fr       */
+/*   Updated: 2024/11/25 07:43:56 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,10 @@ ssize_t	load_substr(char **strp, char **temp, const size_t nl)
 			nl + (nl != temp_len) + BUFFER_SIZE + 1);
 	if (!alloc)
 		return (-1);
-	ft_memmove(*strp, *temp, nl + (nl != temp_len));
+	ft_memmove_(*strp, *temp, nl + (nl != temp_len));
 	if (temp_len == nl)
 		return (free_(temp), (ssize_t)nl);
-	ft_memmove(*temp, *temp + nl + 1, temp_len - nl - 1);
+	ft_memmove_(*temp, *temp + nl + 1, temp_len - nl - 1);
 	alloc = ft_realloc((void **)temp, temp_len + 1, temp_len - nl);
 	if (!alloc)
 		return (-1);
