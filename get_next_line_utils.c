@@ -17,7 +17,7 @@ ssize_t	add_substr(char **srcp, const size_t src_len, const size_t from,
 			char **destp);
 size_t	ft_realloc(void **ptrp, const size_t old_size, const size_t new_size);
 void	ft_memmove_(void *dest, const void *src, const size_t n);
-size_t	ft_strlen(const char *str);
+size_t	ft_strlen_(const char *str);
 
 ssize_t	take_line(char **strp, const size_t until, char **temp)
 {
