@@ -13,7 +13,7 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1000000
+#  define BUFFER_SIZE 42
 # endif
 # include <unistd.h>
 # include <stdlib.h>
@@ -37,6 +37,6 @@ ssize_t	take_temp(char **strp, char **temp);
 
 ssize_t	load_substr(char **strp, char **temp, const size_t nl);
 
-size_t	ft_strlen(const char *str);
+size_t	ft_strlen_(const char *str);
 
 #endif
