@@ -110,7 +110,7 @@ void	ft_memmove_(void *dest, const void *src, const size_t n)
 		((unsigned char *) dest)[i] = ((unsigned char *)src)[i];
 }
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen_(const char *str)
 {
 	size_t	l;
 
