@@ -87,7 +87,7 @@ ssize_t	load_substr(char **strp, char **temp, const size_t nl)
 	size_t	temp_len;
 	size_t	alloc;
 
-	temp_len = ft_strlen(*temp);
+	temp_len = ft_strlen_(*temp);
 	alloc = ft_realloc((void **)strp, 1,
 			nl + (nl != temp_len) + BUFFER_SIZE + 1);
 	if (!alloc)
