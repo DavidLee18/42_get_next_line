@@ -55,7 +55,7 @@ ssize_t	add_substr(char **srcp, const size_t src_len, const size_t from,
 		return (-1);
 	if (from != 0 && from == src_len)
 		return ((ssize_t)src_len);
-	dest_len = ft_strlen(*destp);
+	dest_len = ft_strlen_(*destp);
 	alloc = ft_realloc((void **)destp, dest_len + 1,
 			dest_len + src_len - from);
 	if (!alloc)
